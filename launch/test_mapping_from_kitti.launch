@@ -1,0 +1,17 @@
+<launch>
+
+	<param name="/use_sim_time" value="false"/>
+
+	<node pkg="mim_slam" name="stablePointExtract" type="stablePointExtract">
+		<remap from="/rslidar_points" to="/velodyne_points"/>
+	</node>
+
+	<node pkg="mim_slam" name="laserOdometry" type="laserOdometry" output="screen" />
+	<node pkg="mim_slam" name="laserMapping" type="laserMapping" output="screen" />
+
+	<node pkg="test_dataset" name="demo_odometry" type="demo_odometry.py"  output="screen">
+	</node>
+
+	<arg name="rviz_config_file" value="$(find mim_slam)/rviz/mapping.rviz"/>
+	<node name="visualizer" pkg="rviz" type="rviz" args="-d $(arg rviz_config_file)"/>
+</launch>
